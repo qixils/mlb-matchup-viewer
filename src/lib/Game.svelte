@@ -1,5 +1,7 @@
 <script lang="ts">
-    export let game;
+    import type {ScheduleGame} from 'src/mlb';
+
+    export let game: ScheduleGame;
 
     export let time_format = new Intl.DateTimeFormat(undefined, { timeStyle: 'short' });
     export function time(dt: string) {

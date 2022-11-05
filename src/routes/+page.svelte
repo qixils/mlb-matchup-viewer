@@ -1,6 +1,7 @@
 <script lang="ts">
+    import type {Schedule} from 'src/mlb';
     import Game from "$lib/Game.svelte";
-    let schedule_promise: Promise<any> = fetch("https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1").then(r => r.json())
+    let schedule_promise: Promise<Schedule> = fetch("https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1").then(r => r.json())
 </script>
 
 <svelte:head>
@@ -17,9 +18,9 @@
     {#await schedule_promise}
         <div class="text-center"><button class="btn btn-square loading"></button></div>
     {:then schedule}
-        {@const games = schedule.dates[0].games.filter(game => game.status.abstractGameState !== "Final")}
+        {@const games = schedule.dates[0]?.games?.filter(game => game.status.statusCode !== "f") ?? []}
         {#if games.length === 0}
-            <p class="text-center">No games are currently scheduled or in progress.</p>
+            <p class="text-center bg-error text-error-content p-2 rounded">No games are currently scheduled or in progress.</p>
         {:else}
             <div class="flex flex-col gap-2">
                 {#each games as game}
