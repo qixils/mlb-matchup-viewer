@@ -390,7 +390,7 @@ export interface ScheduleTeams {
 export interface ScheduleTeam {
     splitSquad: boolean,
     seriesNumber: number, // int
-    score: number, // int; current game score
+    score?: number, // int; current game score; only present if game is in progress
     team: NameableObject,
     leagueRecord: LeagueRecord,
 }

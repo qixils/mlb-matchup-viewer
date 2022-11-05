@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {LiveData, StatData, BoxScoreTeam, BoxScoreTeamPlayer, PitchingStats, BattingStats} from 'src/mlb';
+    import type {LiveData, StatData, BoxScoreTeam, BoxScoreTeamPlayer, PitchingStats, BattingStats, LiveTeam} from 'src/mlb';
     import Player from '$lib/Player.svelte';
     import {page} from "$app/stores";
     let playersById = new Map<number, BoxScoreTeamPlayer>();
@@ -7,6 +7,8 @@
     let teamsByPlayer = new Map<number, BoxScoreTeam>();
     var batter: number | undefined;
     var pitcher: number | undefined;
+    var home: LiveTeam | undefined;
+    var away: LiveTeam | undefined;
 
     function addPlayers(team: BoxScoreTeam) {
         for (const key in team.players) {
@@ -34,10 +36,12 @@
         fetch(`https://statsapi.mlb.com/api/v1.1/game/${$page.params.id}/feed/live`).
         then(data => data.json()).
         then((data : LiveData) => {
-            addPlayers(data.liveData.boxscore.teams.away);
+            home = data.gameData.teams.home;
+            away = data.gameData.teams.away;
             addPlayers(data.liveData.boxscore.teams.home);
-            batter = data.liveData.plays.currentPlay.matchup.batter.id;
-            pitcher = data.liveData.plays.currentPlay.matchup.pitcher.id;
+            addPlayers(data.liveData.boxscore.teams.away);
+            batter = data.liveData.plays.currentPlay?.matchup?.batter?.id;
+            pitcher = data.liveData.plays.currentPlay?.matchup?.pitcher?.id;
             if (data.gameData.status.statusCode !== "F") {
                 setTimeout(run, 1000 * data.metaData.wait);
             }
@@ -46,6 +50,21 @@
 
     run();
 </script>
+
+<svelte:head>
+    {#if home !== undefined && away !== undefined}
+        <title>{home.teamName} vs. {away.teamName} :: MLB Matchup Statistics Viewer</title>
+        <meta property="og:site_name" content="MLB Matchup Statistics Viewer">
+        <meta property="og:title" content="{home.teamName} vs. {away.teamName}">
+    {:else}
+        <title>MLB Matchup Statistics Viewer</title>
+        <meta property="og:title" content="MLB Matchup Statistics Viewer">
+    {/if}
+    <meta name="description" content="View the seasonal statistics of players currently matching up in Major League Baseball.">
+    <meta property="og:description" content="View the seasonal statistics of players currently matching up in Major League Baseball.">
+    <meta property="og:url" content="https://mlb.qixils.dev/game/{$page.params.id}/">
+    <link rel="canonical" href="https://mlb.qixils.dev/game/{$page.params.id}/">
+</svelte:head>
 
 <!-- svelte-ignore non-top-level-reactive-declaration -->
 <main class="w-screen h-screen flex flex-col lg:flex-row gap-0">

@@ -16,7 +16,7 @@
 <main class="mx-auto w-full h-screen max-w-lg px-5 pt-1 bg-base-200">
     <h1 class="text-center text-primary-content bg-primary p-2 my-4 rounded-t">Live Games</h1>
     {#await schedule_promise}
-        <div class="text-center"><button class="btn btn-square loading"></button></div>
+        <div class="text-center"><button class="btn loading">LOADING GAMES</button></div>
     {:then schedule}
         {@const games = schedule.dates[0]?.games?.filter(game => game.status.statusCode !== "f") ?? []}
         {#if games.length === 0}

@@ -32,7 +32,13 @@
 <div class="p-4 h-1/2 w-full lg:h-full lg:w-1/2 {bg} {fg}">
     {#if player === undefined || team === undefined}
         <!-- TODO: center align -->
-        <div class="text-center"><button class="btn btn-square loading"></button></div>
+        <div class="text-center"><button class="btn loading">
+            {#if playersById.size === 0}
+                LOADING PLAYERS
+            {:else}
+                WAITING FOR THE GAME
+            {/if}
+        </button></div>
     {:else}
         <div class="mb-4">
             <h2>{player.person.fullName}</h2>
