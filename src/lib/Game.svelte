@@ -9,7 +9,7 @@
     }
 </script>
 
-<a class="block bg-accent text-accent-content rounded p-3 flex-grow" href="/game/{game.gamePk}/">
+<a class="block bg-accent text-accent-content rounded p-3 flex-grow transition-transform motion-safe:hover:scale-[103%]" href="/game/{game.gamePk}/">
     <h2>{game.description}</h2>
     {#if game.status.abstractGameState === "Live"}
         <h6>In Progress</h6>
