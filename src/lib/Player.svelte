@@ -29,7 +29,7 @@
     }
 </script>
 
-<div class="p-4 h-1/2 w-full lg:h-full lg:w-1/2 {bg} {fg}">
+<div class="p-4 max-lg:basis-[50dvh] max-lg:w-full {isBatter ? "shrink" : ""} lg:h-full lg:basis-[50dvw] {bg} {fg}">
     {#if player === undefined || team === undefined}
         <!-- TODO: center align -->
         <div class="text-center"><button class="btn loading">
@@ -53,54 +53,52 @@
             </h3>
         </div>
 
-        <div class="overflow-x-auto max-w-sm lg:max-w-xl">
-            <table class="table max-lg:table-compact w-full">
+        <table class="table max-lg:table-compact static max-w-xs lg:max-w-xl">
+            <tr>
+                <th>Statistic</th>
+                <th>Value</th>
+                <th>Team Rank</th>
+            </tr>
+            {#if batterStats !== undefined}
                 <tr>
-                    <th>Statistic</th>
-                    <th>Value</th>
-                    <th>Team Rank</th>
+                    <td>Batting average</td>
+                    <td>{batterStats.avg}</td>
+                    <td>#{calcRank(playerStatsById, player.person.id, "avg", false)}</td>
                 </tr>
-                {#if batterStats !== undefined}
-                    <tr>
-                        <td>Batting Average</td>
-                        <td>{batterStats.avg}</td>
-                        <td>#{calcRank(playerStatsById, player.person.id, "avg", false)}</td>
-                    </tr>
-                    <tr>
-                        <td>On-base Percentage</td>
-                        <td>{batterStats.obp}</td>
-                        <td>#{calcRank(playerStatsById, player.person.id, "obp", false)}</td>
-                    </tr>
-                    <tr>
-                        <td>Slugging Percentage</td>
-                        <td>{batterStats.slg}</td>
-                        <td>#{calcRank(playerStatsById, player.person.id, "slg", false)}</td>
-                    </tr>
-                    <tr>
-                        <td>On-base Plus Slugging</td>
-                        <td>{batterStats.ops}</td>
-                        <td>#{calcRank(playerStatsById, player.person.id, "ops", false)}</td>
-                    </tr>
-                {:else if pitcherStats !== undefined}
-                    <tr>
-                        <td>Earned Run Average</td>
-                        <td>{pitcherStats.era}</td>
-                        <td>#{calcRank(playerStatsById, player.person.id, "era", true)}</td>
-                    </tr>
-                    <tr>
-                        <td>Walks and Hits per Inning Pitched</td>
-                        <td>{pitcherStats.whip}</td>
-                        <td>#{calcRank(playerStatsById, player.person.id, "whip", true)}</td>
-                    </tr>
-                {:else}
-                    <tr>
-                        <td colspan="3" class="text-center">
-                            <button class="btn btn-square loading"></button>
-                        </td>
-                    </tr>
-                {/if}
-            </table>
-        </div>
+                <tr>
+                    <td>On-base percentage</td>
+                    <td>{batterStats.obp}</td>
+                    <td>#{calcRank(playerStatsById, player.person.id, "obp", false)}</td>
+                </tr>
+                <tr>
+                    <td>Slugging percentage</td>
+                    <td>{batterStats.slg}</td>
+                    <td>#{calcRank(playerStatsById, player.person.id, "slg", false)}</td>
+                </tr>
+                <tr>
+                    <td>On-base plus slugging</td>
+                    <td>{batterStats.ops}</td>
+                    <td>#{calcRank(playerStatsById, player.person.id, "ops", false)}</td>
+                </tr>
+            {:else if pitcherStats !== undefined}
+                <tr>
+                    <td>Earned run average</td>
+                    <td>{pitcherStats.era}</td>
+                    <td>#{calcRank(playerStatsById, player.person.id, "era", true)}</td>
+                </tr>
+                <tr>
+                    <td>Walks & hits per inning pitched</td>
+                    <td>{pitcherStats.whip}</td>
+                    <td>#{calcRank(playerStatsById, player.person.id, "whip", true)}</td>
+                </tr>
+            {:else}
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button class="btn btn-square loading"></button>
+                    </td>
+                </tr>
+            {/if}
+        </table>
     {/if}
 </div>
 
