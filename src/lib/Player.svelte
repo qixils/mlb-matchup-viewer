@@ -29,7 +29,8 @@
     }
 </script>
 
-<div class="p-4 max-lg:basis-[50dvh] max-lg:w-full {isBatter ? "shrink" : ""} lg:h-full lg:basis-[50dvw] {bg} {fg}">
+<div class="p-4 max-lg:basis-[50dvh] max-lg:w-screen {isBatter ? "shrink" : ""} lg:h-screen lg:basis-[50dvw] {bg} {fg}">
+    <div class="flex flex-col justify-center items-center h-full">
     {#if player === undefined || team === undefined}
         <!-- TODO: center align -->
         <div class="text-center"><button class="btn loading">
@@ -40,7 +41,7 @@
             {/if}
         </button></div>
     {:else}
-        <div class="mb-4">
+        <div class="mb-4 text-center">
             <h2>{player.person.fullName}</h2>
             <h3>{player.position.name}</h3>
             <h3>
@@ -53,7 +54,7 @@
             </h3>
         </div>
 
-        <table class="table max-lg:table-compact static max-w-xs lg:max-w-xl">
+        <table class="table mx-auto max-lg:table-compact static max-w-xs lg:max-w-xl">
             <tr>
                 <th>Statistic</th>
                 <th>Value</th>
@@ -100,6 +101,7 @@
             {/if}
         </table>
     {/if}
+    </div>
 </div>
 
 <style lang="postcss">
